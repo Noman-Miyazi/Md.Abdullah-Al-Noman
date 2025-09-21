@@ -1,1 +1,136 @@
 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Typing Banner</title>
+
+  <!-- Fira Code -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0f172a;
+      --card: #0b1220;
+      --text: #206ac5;
+      --accent: #7c3aed;
+    }
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg,#071029 0%, #0b192b 100%);
+      font-family: "Fira Code", monospace;
+      color:var(--text);
+    }
+    .typing-wrap{
+      max-width:760px;
+      width:90%;
+      padding:28px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.03);
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+      text-align:center;
+    }
+    .title{
+      font-size:18px;
+      margin:0 0 10px;
+      color: #9fb6df;
+      letter-spacing:0.6px;
+    }
+    .typed {
+      font-size:28px;
+      font-weight:600;
+      min-height:44px; /* reserve height */
+      display:inline-block;
+      white-space:nowrap;
+      overflow:hidden;
+    }
+    .cursor {
+      display:inline-block;
+      width:10px;
+      height:28px;
+      background:var(--accent);
+      margin-left:8px;
+      vertical-align:bottom;
+      animation: blink 1s steps(2, start) infinite;
+      border-radius:2px;
+    }
+    @keyframes blink {
+      0%,50%{opacity:1}
+      50.1%,100%{opacity:0.05}
+    }
+    .sub{
+      margin-top:10px;
+      font-size:13px;
+      color:#9fb6df;
+    }
+
+    /* make responsive */
+    @media (max-width:480px){
+      .typed{font-size:20px}
+      .cursor{height:22px}
+    }
+  </style>
+</head>
+<body>
+  <div class="typing-wrap" role="img" aria-label="Profile roles typing">
+    <div>
+      <span id="typed" class="typed"></span><span class="cursor" aria-hidden="true"></span>
+    </div>
+    
+  </div>
+
+  <script>
+    // Configuration
+    const lines = [
+      "Frontend Developer",
+      "Competitive Programmer",
+      "AI Explorer",
+      "Problem Solver 🚀"
+    ];
+    const typeSpeed = 80;      // ms per character typed
+    const deleteSpeed = 40;    // ms per character deleted
+    const pauseAfterLine = 1200; // ms to wait after typing a full line
+    const pauseBeforeStart = 500; // initial delay
+
+    const el = document.getElementById("typed");
+
+    async function wait(ms){
+      return new Promise(res => setTimeout(res, ms));
+    }
+
+    async function typeText(text){
+      for(let i=0;i<=text.length;i++){
+        el.textContent = text.slice(0,i);
+        await wait(typeSpeed);
+      }
+    }
+
+    async function deleteText(text){
+      for(let i=text.length;i>=0;i--){
+        el.textContent = text.slice(0,i);
+        await wait(deleteSpeed);
+      }
+    }
+
+    async function loopTyping(){
+      await wait(pauseBeforeStart);
+      let i=0;
+      while(true){
+        const line = lines[i % lines.length];
+        await typeText(line);
+        await wait(pauseAfterLine);
+        await deleteText(line);
+        await wait(250);
+        i++;
+      }
+    }
+
+    loopTyping();
+  </script>
+</body>
+</html>
